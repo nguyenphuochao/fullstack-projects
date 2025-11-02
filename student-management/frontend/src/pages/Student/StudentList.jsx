@@ -1,13 +1,27 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Pagination from '../../components/Pagination';
+import axios from 'axios';
 
 const StudentList = () => {
     const [search, setSearch] = useState('');
+    const [students, setStudents] = useState([]);
+
+    const getStudents = async () => {
+        try {
+            const response = await axios.get('/student/list');
+            setStudents(response.data.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        getStudents();
+    }, []);
 
     const handleSearchForm = (e) => {
         e.preventDefault();
-        alert(search);
     };
 
     return (
@@ -41,51 +55,23 @@ const StudentList = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>Nguyễn Thị Bé Bảy</td>
-                        <td>09/03/2000</td>
-                        <td>nữ</td>
-                        <td>
-                            <a href="edit.html">Sửa</a>
-                        </td>
-                        <td>
-                            <a data={1} className="delete" href="list.html" type="student">
-                                Xóa
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>2</td>
-                        <td>Nguyễn Văn Tèo</td>
-                        <td>15/03/1995</td>
-                        <td>nam</td>
-                        <td>
-                            <a href="edit.html">Sửa</a>
-                        </td>
-                        <td>
-                            <a data={2} className="delete" href="list.html" type="student">
-                                Xóa
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>3</td>
-                        <td>Cao Thị Mẫn</td>
-                        <td>16/03/1990</td>
-                        <td>khác</td>
-                        <td>
-                            <a href="edit.html">Sửa</a>
-                        </td>
-                        <td>
-                            <a data={3} className="delete" href="list.html" type="student">
-                                Xóa
-                            </a>
-                        </td>
-                    </tr>
+                    {students.map((student, index) => (
+                        <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>{student._id}</td>
+                            <td>{student.name}</td>
+                            <td>{student.birthday}</td>
+                            <td>{student.gender}</td>
+                            <td>
+                                <Link to={`/student/edit/${student._id}`}>Sửa</Link>
+                            </td>
+                            <td>
+                                <a data={1} className="delete" href="list.html" type="student">
+                                    Xóa
+                                </a>
+                            </td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
             <div>

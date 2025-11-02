@@ -1,6 +1,7 @@
 import Header from './components/Header';
 import Footer from './components/Footer';
 import { Route, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 import StudentList from './pages/Student/StudentList';
 import StudentCreate from './pages/Student/StudentCreate';
@@ -9,6 +10,7 @@ import StudentEdit from './pages/Student/StudentEdit';
 const App = () => {
     return (
         <div className="container" style={{ marginTop: 20 }}>
+            <ToastContainer />
             <Header />
 
             <Routes>
