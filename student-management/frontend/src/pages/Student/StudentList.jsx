@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import Pagination from '../../components/Pagination';
 import axios from 'axios';
 import { updateParam, getGenderName } from '../../helper/util';
+import { toast } from 'react-toastify';
 
 const StudentList = () => {
     const [students, setStudents] = useState([]);
@@ -42,6 +43,19 @@ const StudentList = () => {
         const newParams = { search: searchValue, page: 1 };
         updateParam(searchParams, setSearchParams, newParams);
     };
+
+    const handleDeleteStudent = async (id) => {
+        if (confirm('Bạn chắc xóa chứ?')) {
+            try {
+                const response = await axios.post(`/student/delete`, { id });
+                toast.success(response.data.message);
+                getStudents();
+            } catch (error) {
+                console.log(error);
+                toast.error(error.message);
+            }
+        }
+    }
 
     return (
         <>
@@ -85,7 +99,7 @@ const StudentList = () => {
                                 <Link to={`/student/edit/${student._id}`}>Sửa</Link>
                             </td>
                             <td>
-                                <Link data={1} className="delete">
+                                <Link onClick={(e) => handleDeleteStudent(student._id)} className="delete">
                                     Xóa
                                 </Link>
                             </td>
@@ -93,6 +107,7 @@ const StudentList = () => {
                     ))}
                 </tbody>
             </table>
+            
             <div>
                 <span>Số lượng: {totalCount}</span>
             </div>

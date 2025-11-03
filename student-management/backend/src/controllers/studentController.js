@@ -9,7 +9,7 @@ const addStudent = async (req, res) => {
             birthday,
             gender
         });
-        res.status(201).json({ success: true, message: "Student create success" })
+        res.status(201).json({ success: true, message: "Student created success" })
     } catch (error) {
         console.log(error);
         res.status(500).json({ success: false, message: "Error" })
@@ -44,4 +44,15 @@ const listStudent = async (req, res) => {
     }
 }
 
-export { addStudent, listStudent }
+// delete student
+const deleteStudent = async (req, res) => {
+    try {
+        await studentModel.findByIdAndDelete(req.body.id);
+        res.status(200).json({ success: true, message: "Student deleted success" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: "Error" })
+    }
+}
+
+export { addStudent, listStudent, deleteStudent }
