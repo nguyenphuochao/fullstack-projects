@@ -7,6 +7,8 @@ import StudentList from './pages/Student/StudentList';
 import StudentCreate from './pages/Student/StudentCreate';
 import StudentEdit from './pages/Student/StudentEdit';
 
+import SubjectList from './pages/Subject/SubjectList';
+
 const App = () => {
     return (
         <div className="container" style={{ marginTop: 20 }}>
@@ -17,6 +19,8 @@ const App = () => {
                 <Route path="/" element={<StudentList />} />
                 <Route path="/student/create" element={<StudentCreate />} />
                 <Route path="/student/edit/:id" element={<StudentEdit />} />
+
+                <Route path="/subject/list" element={<SubjectList />} />
             </Routes>
 
             <Footer />

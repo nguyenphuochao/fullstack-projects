@@ -44,7 +44,18 @@ const listStudent = async (req, res) => {
     }
 }
 
-// delete student
+// Detail student by _id
+const detailStudent = async (req, res) => {
+    try {
+        const student = await studentModel.findById(req.params.id);
+        res.status(200).json({ success: true, student });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: "Error" })
+    }
+}
+
+// delete student by _id
 const deleteStudent = async (req, res) => {
     try {
         await studentModel.findByIdAndDelete(req.body.id);
@@ -55,4 +66,15 @@ const deleteStudent = async (req, res) => {
     }
 }
 
-export { addStudent, listStudent, deleteStudent }
+// update student by _id
+const updateStudent = async (req, res) => {
+    try {
+        await studentModel.findByIdAndUpdate(req.body.id, req.body);
+        res.status(200).json({ success: true, message: "Student updated success" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: "Error" })
+    }
+}
+
+export { addStudent, listStudent, detailStudent, deleteStudent, updateStudent }

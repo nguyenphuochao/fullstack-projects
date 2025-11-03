@@ -5,3 +5,8 @@
 .page-item.disabled {
     cursor: no-drop;
 }
+
+/* .wrapper {
+    max-height: 410px;
+    overflow-y: auto;
+} */

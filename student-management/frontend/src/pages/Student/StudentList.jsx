@@ -13,6 +13,7 @@ const StudentList = () => {
     const [page, setPage] = useState(Number(searchParams.get('page')) || 1);
     const [search, setSearch] = useState(searchParams.get('search') || '');
 
+    // Get list students
     const getStudents = async () => {
         try {
             const response = await axios.get(`/student/list?page=${page}&search=${search}`);
@@ -22,20 +23,40 @@ const StudentList = () => {
             setPage(response.data.pagination.page);
         } catch (error) {
             console.log(error);
+            toast.error(error.message);
         }
     };
 
+    // Init load
     useEffect(() => {
         getStudents();
     }, [page, search]);
 
+    // Click page number to go to page
     const handleClickPageNumber = (e, page) => {
         e.preventDefault();
         setPage(page);
         const newParams = { page: page };
         updateParam(searchParams, setSearchParams, newParams);
-    }
+    };
 
+    // Click prev page button
+    const handlePrevPage = (e) => {
+        e.preventDefault();
+        setPage(page - 1);
+        const newParams = { page: page - 1 };
+        updateParam(searchParams, setSearchParams, newParams);
+    };
+
+    // Click next page button
+    const handleNextPage = (e) => {
+        e.preventDefault();
+        setPage(page + 1);
+        const newParams = { page: page + 1 };
+        updateParam(searchParams, setSearchParams, newParams);
+    };
+
+    // Search params by name
     const handleSearchForm = (e) => {
         e.preventDefault();
         const searchValue = e.target.search.value;
@@ -44,6 +65,7 @@ const StudentList = () => {
         updateParam(searchParams, setSearchParams, newParams);
     };
 
+    // Delete student by _id
     const handleDeleteStudent = async (id) => {
         if (confirm('Bạn chắc xóa chứ?')) {
             try {
@@ -55,7 +77,7 @@ const StudentList = () => {
                 toast.error(error.message);
             }
         }
-    }
+    };
 
     return (
         <>
@@ -65,13 +87,7 @@ const StudentList = () => {
             </Link>
             <form onSubmit={handleSearchForm}>
                 <label className="form-inline justify-content-end">
-                    Tìm kiếm:{' '}
-                    <input
-                        type="search"
-                        name="search"
-                        className="form-control"
-                        defaultValue={search}
-                    />
+                    Tìm kiếm: <input type="search" name="search" className="form-control" defaultValue={search} />
                     <button className="btn btn-danger">Tìm</button>
                 </label>
             </form>
@@ -107,12 +123,19 @@ const StudentList = () => {
                     ))}
                 </tbody>
             </table>
-            
+
             <div>
                 <span>Số lượng: {totalCount}</span>
             </div>
 
-            <Pagination page={page} totalPages={totalpages} handleClickPageNumber={handleClickPageNumber} />
+            {/* Pagination component */}
+            <Pagination
+                page={page}
+                totalPages={totalpages}
+                handleClickPageNumber={handleClickPageNumber}
+                handlePrevPage={handlePrevPage}
+                handleNextPage={handleNextPage}
+            />
         </>
     );
 };

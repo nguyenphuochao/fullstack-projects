@@ -1,7 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-const Pagination = ({ page, totalPages, handleClickPageNumber }) => {
-
+const Pagination = ({ page, totalPages, handleClickPageNumber, handlePrevPage, handleNextPage }) => {
     const arrPages = [];
     for (let i = 1; i <= totalPages; i++) {
         arrPages.push(i);
@@ -11,25 +11,27 @@ const Pagination = ({ page, totalPages, handleClickPageNumber }) => {
         <nav style={{ marginTop: '30px' }} aria-label="Page navigation example">
             <ul className="pagination">
                 <li className={`page-item ${page === 1 ? 'disabled' : ''}`}>
-                    <a className="page-link" href="#">
+                    <Link onClick={(e) => handlePrevPage(e)} className="page-link" to="#">
                         Previous
-                    </a>
+                    </Link>
                 </li>
 
-                {
-                    arrPages.map((item, index) => (
-                        <li onClick={(e) => handleClickPageNumber(e, item)} key={index} className={`page-item ${page === item ? 'active' : ''}`}>
-                            <a className="page-link" href="#">
-                                {item}
-                            </a>
-                        </li>
-                    ))
-                }
+                {arrPages.map((item, index) => (
+                    <li
+                        onClick={(e) => handleClickPageNumber(e, item)}
+                        key={index}
+                        className={`page-item ${page === item ? 'active' : ''}`}
+                    >
+                        <a className="page-link" href="#">
+                            {item}
+                        </a>
+                    </li>
+                ))}
 
                 <li className={`page-item ${page >= totalPages ? 'disabled' : ''}`}>
-                    <a className="page-link" href="#">
+                    <Link onClick={(e) => handleNextPage(e)} className="page-link" to="#">
                         Next
-                    </a>
+                    </Link>
                 </li>
             </ul>
         </nav>
