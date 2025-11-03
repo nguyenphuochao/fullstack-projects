@@ -15,7 +15,7 @@ const StudentCreate = () => {
         try {
             const response = await axios.post('/student/add', data);
             console.log(response);
-            toast.error(response.message);
+            toast.success(response.data.message);
             navigate('/');
         } catch (error) {
             console.log(error);

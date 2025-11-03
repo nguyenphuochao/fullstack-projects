@@ -1,16 +1,24 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import Pagination from '../../components/Pagination';
 import axios from 'axios';
+import { updateParam, getGenderName } from '../../helper/util';
 
 const StudentList = () => {
-    const [search, setSearch] = useState('');
     const [students, setStudents] = useState([]);
+    const [totalCount, setTotalCount] = useState(0);
+    const [totalpages, setTotalPages] = useState(0);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [page, setPage] = useState(Number(searchParams.get('page')) || 1);
+    const [search, setSearch] = useState(searchParams.get('search') || '');
 
     const getStudents = async () => {
         try {
-            const response = await axios.get('/student/list');
+            const response = await axios.get(`/student/list?page=${page}&search=${search}`);
             setStudents(response.data.data);
+            setTotalCount(response.data.totalCount);
+            setTotalPages(response.data.pagination.totalPages);
+            setPage(response.data.pagination.page);
         } catch (error) {
             console.log(error);
         }
@@ -18,10 +26,21 @@ const StudentList = () => {
 
     useEffect(() => {
         getStudents();
-    }, []);
+    }, [page, search]);
+
+    const handleClickPageNumber = (e, page) => {
+        e.preventDefault();
+        setPage(page);
+        const newParams = { page: page };
+        updateParam(searchParams, setSearchParams, newParams);
+    }
 
     const handleSearchForm = (e) => {
         e.preventDefault();
+        const searchValue = e.target.search.value;
+        setSearch(searchValue);
+        const newParams = { search: searchValue, page: 1 };
+        updateParam(searchParams, setSearchParams, newParams);
     };
 
     return (
@@ -34,10 +53,10 @@ const StudentList = () => {
                 <label className="form-inline justify-content-end">
                     Tìm kiếm:{' '}
                     <input
-                        onChange={(e) => setSearch(e.target.value)}
                         type="search"
                         name="search"
                         className="form-control"
+                        defaultValue={search}
                     />
                     <button className="btn btn-danger">Tìm</button>
                 </label>
@@ -61,24 +80,24 @@ const StudentList = () => {
                             <td>{student._id}</td>
                             <td>{student.name}</td>
                             <td>{student.birthday}</td>
-                            <td>{student.gender}</td>
+                            <td>{getGenderName(student.gender)}</td>
                             <td>
                                 <Link to={`/student/edit/${student._id}`}>Sửa</Link>
                             </td>
                             <td>
-                                <a data={1} className="delete" href="list.html" type="student">
+                                <Link data={1} className="delete">
                                     Xóa
-                                </a>
+                                </Link>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
             <div>
-                <span>Số lượng: 3</span>
+                <span>Số lượng: {totalCount}</span>
             </div>
 
-            <Pagination />
+            <Pagination page={page} totalPages={totalpages} handleClickPageNumber={handleClickPageNumber} />
         </>
     );
 };

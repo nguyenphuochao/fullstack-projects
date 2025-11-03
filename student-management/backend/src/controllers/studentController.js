@@ -1,5 +1,6 @@
 import studentModel from '../models/studentModel.js'
 
+// add student
 const addStudent = async (req, res) => {
     try {
         const { name, birthday, gender } = req.body
@@ -15,10 +16,28 @@ const addStudent = async (req, res) => {
     }
 }
 
+// get list student
 const listStudent = async (req, res) => {
     try {
-        const students = await studentModel.find({});
-        res.status(200).json({ success: true, data: students })
+        let searchQuery = studentModel.find({});
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit;
+
+        if (Object.hasOwn(req.query, 'search')) {
+            searchQuery.find({
+                name: { $regex: req.query.search, $options: 'i' }
+            })
+        }
+
+        const totalCount = await studentModel.countDocuments(searchQuery);
+        const totalPages = Math.ceil(await studentModel.countDocuments(searchQuery) / limit);
+        const pagination = { page, totalPages };
+
+        searchQuery.skip(skip).limit(limit);
+
+        const students = await studentModel.find(searchQuery);
+        res.status(200).json({ success: true, data: students, totalCount, pagination });
     } catch (error) {
         console.log(error);
         res.status(500).json({ success: false, message: "Error" })
