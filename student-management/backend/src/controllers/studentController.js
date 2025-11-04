@@ -1,6 +1,6 @@
 import studentModel from '../models/studentModel.js'
 
-// add student
+// Add student
 const addStudent = async (req, res) => {
     try {
         const { name, birthday, gender } = req.body
@@ -16,7 +16,7 @@ const addStudent = async (req, res) => {
     }
 }
 
-// get list student
+// Get list student
 const listStudent = async (req, res) => {
     try {
         let searchQuery = studentModel.find({});
@@ -24,6 +24,7 @@ const listStudent = async (req, res) => {
         const limit = parseInt(req.query.limit) || 10;
         const skip = (page - 1) * limit;
 
+        // Search params
         if (Object.hasOwn(req.query, 'search')) {
             searchQuery.find({
                 name: { $regex: req.query.search, $options: 'i' }
@@ -36,7 +37,7 @@ const listStudent = async (req, res) => {
 
         searchQuery.skip(skip).limit(limit);
 
-        const students = await studentModel.find(searchQuery);
+        const students = await studentModel.find(searchQuery).sort({ createdAt: 'desc' });
         res.status(200).json({ success: true, data: students, totalCount, pagination });
     } catch (error) {
         console.log(error);
@@ -55,7 +56,7 @@ const detailStudent = async (req, res) => {
     }
 }
 
-// delete student by _id
+// Delete student by _id
 const deleteStudent = async (req, res) => {
     try {
         await studentModel.findByIdAndDelete(req.body.id);
@@ -66,7 +67,7 @@ const deleteStudent = async (req, res) => {
     }
 }
 
-// update student by _id
+// Update student by _id
 const updateStudent = async (req, res) => {
     try {
         await studentModel.findByIdAndUpdate(req.body.id, req.body);

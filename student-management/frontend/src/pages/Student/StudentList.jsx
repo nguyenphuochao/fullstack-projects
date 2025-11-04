@@ -104,38 +104,48 @@ const StudentList = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {students.map((student, index) => (
-                        <tr key={index}>
-                            <td>{index + 1}</td>
-                            <td>{student._id}</td>
-                            <td>{student.name}</td>
-                            <td>{student.birthday}</td>
-                            <td>{getGenderName(student.gender)}</td>
-                            <td>
-                                <Link to={`/student/edit/${student._id}`}>Sửa</Link>
-                            </td>
-                            <td>
-                                <Link onClick={(e) => handleDeleteStudent(student._id)} className="delete">
-                                    Xóa
-                                </Link>
+                    {students.length > 0 ? (
+                        students.map((student, index) => (
+                            <tr key={index}>
+                                <td>{index + 1}</td>
+                                <td>{student._id}</td>
+                                <td>{student.name}</td>
+                                <td>{student.birthday}</td>
+                                <td>{getGenderName(student.gender)}</td>
+                                <td>
+                                    <Link to={`/student/edit/${student._id}`}>Sửa</Link>
+                                </td>
+                                <td>
+                                    <Link onClick={(e) => handleDeleteStudent(student._id)} className="delete">
+                                        Xóa
+                                    </Link>
+                                </td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td className="text-center" colSpan={7}>
+                                Danh sách trống
                             </td>
                         </tr>
-                    ))}
+                    )}
                 </tbody>
             </table>
 
-            <div>
+            <div className="total-count">
                 <span>Số lượng: {totalCount}</span>
             </div>
 
             {/* Pagination component */}
-            <Pagination
-                page={page}
-                totalPages={totalpages}
-                handleClickPageNumber={handleClickPageNumber}
-                handlePrevPage={handlePrevPage}
-                handleNextPage={handleNextPage}
-            />
+            {students.length > 0 && (
+                <Pagination
+                    page={page}
+                    totalPages={totalpages}
+                    handleClickPageNumber={handleClickPageNumber}
+                    handlePrevPage={handlePrevPage}
+                    handleNextPage={handleNextPage}
+                />
+            )}
         </>
     );
 };
