@@ -8,6 +8,7 @@ import StudentCreate from './pages/Student/StudentCreate';
 import StudentEdit from './pages/Student/StudentEdit';
 
 import SubjectList from './pages/Subject/SubjectList';
+import SubjectCreate from './pages/Subject/SubjectCreate';
 
 const App = () => {
     return (
@@ -21,6 +22,7 @@ const App = () => {
                 <Route path="/student/edit/:id" element={<StudentEdit />} />
 
                 <Route path="/subject/list" element={<SubjectList />} />
+                <Route path="/subject/create" element={<SubjectCreate />} />
             </Routes>
 
             <Footer />

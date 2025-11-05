@@ -1,12 +1,34 @@
-import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const SubjectList = () => {
+    const [page, setPage] = useState(1);
+    const [subjects, setSubjects] = useState([]);
+    const [totalCount, setTotalCount] = useState(0);
+
+    const fetchSubjects = async () => {
+        try {
+            const response = await axios.get('/subject/list?page=' + page);
+            setSubjects([...subjects, ...response.data.data]);
+            setTotalCount(response.data.totalCount);
+            console.log(response.data.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        fetchSubjects();
+    }, [page]);
+
     return (
         <div className="subject">
             <h1>Danh sách Môn Học</h1>
-            <a href="add.html" className="btn btn-info">
+            <Link to="/subject/create" className="btn btn-info">
                 Add
-            </a>
+            </Link>
             <form action="list.html" method="GET">
                 <label className="form-inline justify-content-end">
                     Tìm kiếm: <input type="search" name="search" className="form-control" defaultValue />
@@ -14,178 +36,57 @@ const SubjectList = () => {
                 </label>
                 <input type="hidden" name="c" defaultValue="subject" />
             </form>
-            <table className="table table-hover">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Mã MH</th>
-                        <th>Tên</th>
-                        <th>Số tín chỉ</th>
-                        <th colSpan={2}>Tùy Chọn</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>Toán</td>
-                        <td>3</td>
-                        <td>
-                            <a href="edit.html">Sửa</a>
-                        </td>
-                        <td>
-                            <a className="delete" data={1} type="subject" href="list.html">
-                                Xóa
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>2</td>
-                        <td>Lý</td>
-                        <td>3</td>
-                        <td>
-                            <a href="edit.html">Sửa</a>
-                        </td>
-                        <td>
-                            <a className="delete" data={2} type="subject" href="list.html">
-                                Xóa
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>3</td>
-                        <td>Hóa</td>
-                        <td>2</td>
-                        <td>
-                            <a href="edit.html">Sửa</a>
-                        </td>
-                        <td>
-                            <a className="delete" data={3} type="subject" href="list.html">
-                                Xóa
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>3</td>
-                        <td>Hóa</td>
-                        <td>2</td>
-                        <td>
-                            <a href="edit.html">Sửa</a>
-                        </td>
-                        <td>
-                            <a className="delete" data={3} type="subject" href="list.html">
-                                Xóa
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>3</td>
-                        <td>Hóa</td>
-                        <td>2</td>
-                        <td>
-                            <a href="edit.html">Sửa</a>
-                        </td>
-                        <td>
-                            <a className="delete" data={3} type="subject" href="list.html">
-                                Xóa
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>3</td>
-                        <td>Hóa</td>
-                        <td>2</td>
-                        <td>
-                            <a href="edit.html">Sửa</a>
-                        </td>
-                        <td>
-                            <a className="delete" data={3} type="subject" href="list.html">
-                                Xóa
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>3</td>
-                        <td>Hóa</td>
-                        <td>2</td>
-                        <td>
-                            <a href="edit.html">Sửa</a>
-                        </td>
-                        <td>
-                            <a className="delete" data={3} type="subject" href="list.html">
-                                Xóa
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>3</td>
-                        <td>Hóa</td>
-                        <td>2</td>
-                        <td>
-                            <a href="edit.html">Sửa</a>
-                        </td>
-                        <td>
-                            <a className="delete" data={3} type="subject" href="list.html">
-                                Xóa
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>3</td>
-                        <td>Hóa</td>
-                        <td>2</td>
-                        <td>
-                            <a href="edit.html">Sửa</a>
-                        </td>
-                        <td>
-                            <a className="delete" data={3} type="subject" href="list.html">
-                                Xóa
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>3</td>
-                        <td>Hóa</td>
-                        <td>2</td>
-                        <td>
-                            <a href="edit.html">Sửa</a>
-                        </td>
-                        <td>
-                            <a className="delete" data={3} type="subject" href="list.html">
-                                Xóa
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>3</td>
-                        <td>Hóa</td>
-                        <td>2</td>
-                        <td>
-                            <a href="edit.html">Sửa</a>
-                        </td>
-                        <td>
-                            <a className="delete" data={3} type="subject" href="list.html">
-                                Xóa
-                            </a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div className="mt-3">
-                <span>Số lượng: 3</span>
+            <div className="table table-hover">
+                <div className="thead">
+                    <div className="tr">
+                        <div>#</div>
+                        <div>Mã MH</div>
+                        <div>Tên</div>
+                        <div>Số tín chỉ</div>
+                        <div>Tùy Chọn</div>
+                    </div>
+                </div>
+                <div
+                    className="tbody"
+                    id="scrollableDiv"
+                    style={{
+                        height: 420,
+                        overflow: 'auto',
+                    }}
+                >
+                    <InfiniteScroll
+                        dataLength={subjects.length}
+                        next={() => setPage((prev) => prev + 1)}
+                        hasMore={subjects.length < totalCount}
+                        loader={<h4>Loading...</h4>}
+                        endMessage={<p className="mt-2 fw-bold">You have seen it all</p>}
+                        scrollableTarget="scrollableDiv"
+                    >
+                        {subjects.map((subject, index) => {
+                            return (
+                                <div key={index} className="tr">
+                                    <div>{index + 1}</div>
+                                    <div>{subject._id}</div>
+                                    <div>{subject.name}</div>
+                                    <div>{subject.numberOfCredits}</div>
+                                    <div>
+                                        <a href="edit.html">Sửa</a>
+                                    </div>
+                                    <div>
+                                        <a className="delete" data={1} type="subject" href="list.html">
+                                            Xóa
+                                        </a>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </InfiniteScroll>
+                </div>
             </div>
-            
+
+            <div className="mt-1">
+                <span>Số lượng: {totalCount}</span>
+            </div>
         </div>
     );
 };

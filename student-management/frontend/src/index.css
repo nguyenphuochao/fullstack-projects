@@ -2,11 +2,30 @@
     margin: 0 2px;
 }
 
+.fw-bold {
+    font-weight: bold;
+}
+
 .page-item.disabled {
     cursor: no-drop;
 }
 
-/* .wrapper {
-    max-height: 410px;
-    overflow-y: auto;
-} */
+.table .thead .tr {
+    display: grid;
+    grid-template-columns: 0.5fr 1.5fr 1fr 1fr 2fr;
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    padding: 10px 0px;
+}
+
+.table .thead .tr div {
+    font-weight: bold;
+}
+
+.table .tbody .tr {
+    display: grid;
+    grid-template-columns: 0.5fr 1.5fr 1fr 1fr 1fr 1fr;
+    row-gap: 10px;
+    border-top: 1px solid #ccc;
+    padding: 10px 0px;
+}

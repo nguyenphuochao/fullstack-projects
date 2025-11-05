@@ -4,6 +4,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { connectDB } from './config/connectDB.js';
 import studentRouter from "./routes/studentRoute.js";
+import subjectRouter from "./routes/subjectRoute.js";
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.use(cookieParser());
 app.use(cors());
 
 app.use("/api/student", studentRouter);
+app.use("/api/subject", subjectRouter);
 
 connectDB().then(() => {
     app.listen(PORT, () => {

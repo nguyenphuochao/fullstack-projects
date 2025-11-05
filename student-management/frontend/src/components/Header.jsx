@@ -1,4 +1,6 @@
-import { Link, NavLink } from 'react-router-dom';
+import { useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const Header = () => {
     return (
