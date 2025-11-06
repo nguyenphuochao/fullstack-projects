@@ -45,4 +45,4 @@ const listSubject = async (req, res) => {
     }
 }
 
-export {addSubject, listSubject }
+export { addSubject, listSubject }

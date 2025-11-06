@@ -10,6 +10,9 @@ import StudentEdit from './pages/Student/StudentEdit';
 import SubjectList from './pages/Subject/SubjectList';
 import SubjectCreate from './pages/Subject/SubjectCreate';
 
+import RegisterList from './pages/Register/RegisterList';
+import RegisterCreate from './pages/Register/RegisterCreate';
+
 const App = () => {
     return (
         <div className="container" style={{ marginTop: 20 }}>
@@ -23,6 +26,9 @@ const App = () => {
 
                 <Route path="/subject/list" element={<SubjectList />} />
                 <Route path="/subject/create" element={<SubjectCreate />} />
+
+                <Route path="/register/list" element={<RegisterList />} />
+                <Route path="/register/create" element={<RegisterCreate />} />
             </Routes>
 
             <Footer />
