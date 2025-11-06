@@ -1,6 +1,27 @@
+import { useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom'
+import axios from 'axios';
 
 const RegisterList = () => {
+
+    const [registers, setRegisters] = useState([]);
+
+    const getRegisters = async () => {
+        try {
+            const response = await axios.get('/register/list');
+            setRegisters(response.data.data);
+            console.log(response.data.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        getRegisters();
+    }, [])
+
+
     return (
         <>
             <div>
@@ -26,46 +47,20 @@ const RegisterList = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>Nguyễn Thị Bé Bảy</td>
-                            <td>1</td>
-                            <td>Toán</td>
-                            <td>5</td>
-                            <td><a href="edit.html">Cập nhật điểm</a></td>
-                            <td><a onclick="return confirm('Bạn muốn xóa đăng ký này phải không?')" href="list.html">Xóa</a></td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>1</td>
-                            <td>Nguyễn Thị Bé Bảy</td>
-                            <td>2</td>
-                            <td>Lý</td>
-                            <td />
-                            <td><a href="edit.html">Cập nhật điểm</a></td>
-                            <td><a onclick="return confirm('Bạn muốn xóa đăng ký này phải không?')" href="list.html">Xóa</a></td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>1</td>
-                            <td>Nguyễn Thị Bé Bảy</td>
-                            <td>3</td>
-                            <td>Hóa</td>
-                            <td />
-                            <td><a href="edit.html">Cập nhật điểm</a></td>
-                            <td><a onclick="return confirm('Bạn muốn xóa đăng ký này phải không?')" href="list.html">Xóa</a></td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>2</td>
-                            <td>Nguyễn Văn Tèo</td>
-                            <td>1</td>
-                            <td>Toán</td>
-                            <td />
-                            <td><a href="edit.html">Cập nhật điểm</a></td>
-                            <td><a onclick="return confirm('Bạn muốn xóa đăng ký này phải không?')" href="list.html">Xóa</a></td>
-                        </tr>
+                        {
+                            registers.map((register, index) => (
+                                <tr key={index}>
+                                    <td>{index + 1}</td>
+                                    <td>{register.studentId._id}</td>
+                                    <td>{register.studentId.name}</td>
+                                    <td>{register.subjectId._id}</td>
+                                    <td>{register.subjectId.name}</td>
+                                    <td>{register.score || 'Chưa cập nhật'}</td>
+                                    <td><a href="edit.html">Cập nhật điểm</a></td>
+                                    <td><a onclick="return confirm('Bạn muốn xóa đăng ký này phải không?')" href="list.html">Xóa</a></td>
+                                </tr>
+                            ))
+                        }
                     </tbody>
                 </table>
                 <div>

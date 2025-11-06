@@ -42,7 +42,8 @@ const RegisterCreate = () => {
     const onSubmit = async (data) => {
         try {
             const response = await axios.post("/register/add", data);
-            toast.success(response.data.message)
+            toast.success(response.data.message);
+            navigate('/register/list');
         } catch (error) {
             console.log(error.message);
             toast.error(error.message)
