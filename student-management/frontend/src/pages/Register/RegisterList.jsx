@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const RegisterList = () => {
-
     const [registers, setRegisters] = useState([]);
 
     const getRegisters = async () => {
@@ -17,18 +17,34 @@ const RegisterList = () => {
         }
     };
 
+    const deleteRegister = async (e, id) => {
+        e.preventDefault();
+        try {
+            if (confirm(' Bạn muốn xóa đăng ký này phải không?')) {
+                const response = await axios.post('/register/delete', { id });
+                toast.success(response.data.message);
+                getRegisters();
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(error.message);
+        }
+    };
+
     useEffect(() => {
         getRegisters();
-    }, [])
-
+    }, []);
 
     return (
         <>
             <div>
                 <h1>Danh sách sinh viên đăng ký môn học</h1>
-                <Link to="/register/create" className="btn btn-info">Add</Link>
+                <Link to="/register/create" className="btn btn-info">
+                    Add
+                </Link>
                 <form>
-                    <label className="form-inline justify-content-end">Tìm kiếm: <input type="search" name="search" className="form-control" defaultValue />
+                    <label className="form-inline justify-content-end">
+                        Tìm kiếm: <input type="search" name="search" className="form-control" defaultValue />
                         <button className="btn btn-danger">Tìm</button>
                     </label>
                     <input type="hidden" name="c" defaultValue="register" />
@@ -47,20 +63,22 @@ const RegisterList = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {
-                            registers.map((register, index) => (
-                                <tr key={index}>
-                                    <td>{index + 1}</td>
-                                    <td>{register.studentId._id}</td>
-                                    <td>{register.studentId.name}</td>
-                                    <td>{register.subjectId._id}</td>
-                                    <td>{register.subjectId.name}</td>
-                                    <td>{register.score || 'Chưa cập nhật'}</td>
-                                    <td><a href="edit.html">Cập nhật điểm</a></td>
-                                    <td><a onclick="return confirm('Bạn muốn xóa đăng ký này phải không?')" href="list.html">Xóa</a></td>
-                                </tr>
-                            ))
-                        }
+                        {registers.map((register, index) => (
+                            <tr key={index}>
+                                <td>{index + 1}</td>
+                                <td>{register.studentId._id}</td>
+                                <td>{register.studentId.name}</td>
+                                <td>{register.subjectId._id}</td>
+                                <td>{register.subjectId.name}</td>
+                                <td>{register.score || 'Chưa cập nhật'}</td>
+                                <td>
+                                    <Link to={`/register/edit/${register._id}`}>Cập nhật điểm</Link>
+                                </td>
+                                <td>
+                                    <Link onClick={(e) => deleteRegister(e, register._id)}>Xóa</Link>
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
                 <div>
@@ -68,7 +86,7 @@ const RegisterList = () => {
                 </div>
             </div>
         </>
-    )
-}
+    );
+};
 
-export default RegisterList
+export default RegisterList;

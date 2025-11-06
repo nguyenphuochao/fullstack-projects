@@ -65,7 +65,7 @@ const StudentList = () => {
         updateParam(searchParams, setSearchParams, newParams);
     };
 
-    // Delete student by _id
+    // Delete student by id
     const handleDeleteStudent = async (id) => {
         if (confirm('Bạn chắc xóa chứ?')) {
             try {
@@ -73,8 +73,11 @@ const StudentList = () => {
                 toast.success(response.data.message);
                 getStudents();
             } catch (error) {
-                console.log(error);
-                toast.error(error.message);
+                if (error.response.status === 400) {
+                    toast.error(error.response.data.message);
+                } else {
+                    toast.error(error.message);
+                }
             }
         }
     };

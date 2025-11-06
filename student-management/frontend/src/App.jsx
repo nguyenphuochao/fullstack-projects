@@ -12,6 +12,7 @@ import SubjectCreate from './pages/Subject/SubjectCreate';
 
 import RegisterList from './pages/Register/RegisterList';
 import RegisterCreate from './pages/Register/RegisterCreate';
+import RegisterEdit from './pages/Register/RegisterEdit';
 
 const App = () => {
     return (
@@ -29,6 +30,7 @@ const App = () => {
 
                 <Route path="/register/list" element={<RegisterList />} />
                 <Route path="/register/create" element={<RegisterCreate />} />
+                <Route path="/register/edit/:id" element={<RegisterEdit />} />
             </Routes>
 
             <Footer />

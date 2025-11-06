@@ -1,3 +1,4 @@
+import registerModel from '../models/registerModel.js';
 import studentModel from '../models/studentModel.js'
 
 // Add student
@@ -56,9 +57,17 @@ const detailStudent = async (req, res) => {
     }
 }
 
-// Delete student by _id
+// Delete student by id
 const deleteStudent = async (req, res) => {
     try {
+        const studentId = req.body.id;
+        const student = await studentModel.findById(studentId);
+        const register = await registerModel.findOne({ studentId });
+
+        if (register) {
+            return res.status(400).json({ success: true, message: `Sinh viên ${student.name} đã đăng kí môn học. Không thể xóa` });
+        }
+
         await studentModel.findByIdAndDelete(req.body.id);
         res.status(200).json({ success: true, message: "Student deleted success" });
     } catch (error) {
