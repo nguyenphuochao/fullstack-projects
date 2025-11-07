@@ -1,11 +1,13 @@
 import express from "express";
-import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import dotenv from "dotenv";
 import { connectDB } from './config/connectDB.js';
 import studentRouter from "./routes/studentRoute.js";
 import subjectRouter from "./routes/subjectRoute.js";
 import registerRouter from "./routes/registerRoute.js";
+import authMiddleware from "./middlewares/authMiddleware.js";
+import authRouter from "./routes/authRoute.js";
 
 dotenv.config();
 
@@ -17,7 +19,11 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors());
 
-// Define router
+// Public API
+app.use("/api/auth", authRouter);
+
+// Private API
+app.use(authMiddleware);
 app.use("/api/student", studentRouter);
 app.use("/api/subject", subjectRouter);
 app.use("/api/register", registerRouter);
