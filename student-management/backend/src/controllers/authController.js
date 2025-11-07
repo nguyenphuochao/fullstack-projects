@@ -1,7 +1,8 @@
 import userModel from '../models/userModel.js'
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
-const registerAuth = async () => {
+const registerAuth = async (req, res) => {
     try {
         // get params from request body
         const { fullname, email, password } = req.body;
@@ -13,10 +14,10 @@ const registerAuth = async () => {
         // save user to db
         await userModel.create({ fullname, email, password: hashedPassword });
 
-        res.json({ success: true, message: "Đăng kí tài khoản thành công" });
+        res.status(201).json({ success: true, message: "Đăng kí tài khoản thành công" });
     } catch (error) {
         console.log(error);
-        res.json({ success: false, message: "Error" });
+        res.status(500).json({ success: false, message: "Error" });
     }
 }
 
