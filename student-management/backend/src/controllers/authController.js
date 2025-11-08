@@ -59,18 +59,6 @@ const loginAuth = async (req, res) => {
     }
 }
 
-// Logout to destroy token
-// const logoutAuth = (req, res) => {
-//     try {
-//         const { token } = req.headers;
-//         blacklist.add(token); // lưu token vào danh sách bị vô hiệu hóa
-//         res.json({ success: true, message: "Đăng xuất thành công" });
-//     } catch (error) {
-//         console.log(error);
-//         res.json({ success: false, message: "Error" });
-//     }
-// }
-
 // Create token
 const createToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET);

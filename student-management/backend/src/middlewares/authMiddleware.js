@@ -12,8 +12,7 @@ const authMiddleware = async (req, res, next) => {
 
         if (!tokenDecode) return res.status(401).json({ success: false, message: "Authenticate" });
 
-        if (!req.body) req.body = {};
-        req.body.userId = tokenDecode.id;
+        req.user = tokenDecode.id;
         next();
     } catch (error) {
         console.log(error);

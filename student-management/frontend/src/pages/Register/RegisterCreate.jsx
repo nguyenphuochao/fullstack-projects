@@ -1,10 +1,12 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { StoreContext } from '../../context/StoreContext';
 
 const RegisterCreate = () => {
+    const { token } = useContext(StoreContext);
     const navigate = useNavigate();
     const {
         register,
@@ -18,7 +20,7 @@ const RegisterCreate = () => {
     const getStudents = async () => {
         // call api from BE
         try {
-            const res = await axios.get('/student/list');
+            const res = await axios.get('/student/list', { headers: { token } });
             setStudents(res.data.data);
             console.log(res.data.data);
         } catch (error) {
@@ -30,7 +32,7 @@ const RegisterCreate = () => {
     const getSubjects = async () => {
         // call api from BE
         try {
-            const res = await axios.get('/subject/list');
+            const res = await axios.get('/subject/list', { headers: { token } });
             setSubjects(res.data.data);
             console.log(res.data.data);
         } catch (error) {
@@ -41,7 +43,7 @@ const RegisterCreate = () => {
     // Submit form
     const onSubmit = async (data) => {
         try {
-            const response = await axios.post('/register/add', data);
+            const response = await axios.post('/register/add', data, { headers: { token } });
             toast.success(response.data.message);
             navigate('/register/list');
         } catch (error) {

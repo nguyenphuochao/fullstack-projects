@@ -8,6 +8,7 @@ import subjectRouter from "./routes/subjectRoute.js";
 import registerRouter from "./routes/registerRoute.js";
 import authMiddleware from "./middlewares/authMiddleware.js";
 import authRouter from "./routes/authRoute.js";
+import userRouter from "./routes/userRoute.js";
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.use(authMiddleware);
 app.use("/api/student", studentRouter);
 app.use("/api/subject", subjectRouter);
 app.use("/api/register", registerRouter);
+app.use("/api/user", userRouter);
 
 // Start source with localhost PORT
 connectDB().then(() => {

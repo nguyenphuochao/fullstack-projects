@@ -4,8 +4,10 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { StoreContext } from '../../context/StoreContext';
 
 const RegisterEdit = () => {
+    const { token } = useContext(StoreContext);
     const navigate = useNavigate();
     const { id } = useParams();
     const [loading, setLoading] = useState(true);
@@ -15,7 +17,7 @@ const RegisterEdit = () => {
     // Get register by id
     const getRegister = async () => {
         try {
-            const response = await axios.get(`/register/detail/${id}`);
+            const response = await axios.get(`/register/detail/${id}`, { headers: { token } });
             setRegister(response.data.register);
         } catch (error) {
             console.log(error);
@@ -29,7 +31,7 @@ const RegisterEdit = () => {
     const handleUpdateScore = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`/register/update`, { id, score });
+            const response = await axios.post(`/register/update`, { id, score }, { headers: { token } });
             toast.success(response.data.message);
             navigate("/register/list");
         } catch (error) {

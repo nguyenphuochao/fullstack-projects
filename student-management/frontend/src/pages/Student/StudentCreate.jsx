@@ -2,8 +2,11 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { useContext } from 'react';
+import { StoreContext } from '../../context/StoreContext';
 
 const StudentCreate = () => {
+    const { token } = useContext(StoreContext);
     const navigate = useNavigate();
     const {
         register,
@@ -13,7 +16,7 @@ const StudentCreate = () => {
 
     const onSubmit = async (data) => {
         try {
-            const response = await axios.post('/student/add', data);
+            const response = await axios.post('/student/add', data, { headers: { token } });
             console.log(response);
             toast.success(response.data.message);
             navigate('/');

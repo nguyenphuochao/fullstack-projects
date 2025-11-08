@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import { StoreContext } from '../../context/StoreContext';
 
 const StudentList = () => {
-    const { token, setToken } = useContext(StoreContext);
+    const { token } = useContext(StoreContext);
     const [students, setStudents] = useState([]);
     const [totalCount, setTotalCount] = useState(0);
     const [totalpages, setTotalPages] = useState(0);
@@ -18,7 +18,7 @@ const StudentList = () => {
     // Get list students
     const getStudents = async () => {
         try {
-            const response = await axios.get(`/student/list?page=${page}&search=${search}`, {token});
+            const response = await axios.get(`/student/list?page=${page}&search=${search}`, { headers: { token } });
             setStudents(response.data.data);
             setTotalCount(response.data.totalCount);
             setTotalPages(response.data.pagination.totalPages);
@@ -71,7 +71,7 @@ const StudentList = () => {
     const handleDeleteStudent = async (id) => {
         if (confirm('Bạn chắc xóa chứ?')) {
             try {
-                const response = await axios.post(`/student/delete`, { id });
+                const response = await axios.post(`/student/delete`, { id }, { headers: { token } });
                 toast.success(response.data.message);
                 getStudents();
             } catch (error) {

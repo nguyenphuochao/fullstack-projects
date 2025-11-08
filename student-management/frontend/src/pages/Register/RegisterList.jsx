@@ -1,15 +1,17 @@
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { StoreContext } from '../../context/StoreContext';
 
 const RegisterList = () => {
+    const { token } = useContext(StoreContext);
     const [registers, setRegisters] = useState([]);
 
     const getRegisters = async () => {
         try {
-            const response = await axios.get('/register/list');
+            const response = await axios.get('/register/list', { headers: { token } });
             setRegisters(response.data.data);
             console.log(response.data.data);
         } catch (error) {
@@ -21,7 +23,7 @@ const RegisterList = () => {
         e.preventDefault();
         try {
             if (confirm(' Bạn muốn xóa đăng ký này phải không?')) {
-                const response = await axios.post('/register/delete', { id });
+                const response = await axios.post('/register/delete', { id }, { headers: { token } });
                 toast.success(response.data.message);
                 getRegisters();
             }

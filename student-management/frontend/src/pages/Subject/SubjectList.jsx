@@ -1,16 +1,18 @@
 import { Link } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
+import { StoreContext } from '../../context/StoreContext';
 
 const SubjectList = () => {
+    const { token } = useContext(StoreContext);
     const [page, setPage] = useState(1);
     const [subjects, setSubjects] = useState([]);
     const [totalCount, setTotalCount] = useState(0);
 
     const fetchSubjects = async () => {
         try {
-            const response = await axios.get('/subject/list?page=' + page);
+            const response = await axios.get('/subject/list?page=' + page, { headers: { token } });
             setSubjects([...subjects, ...response.data.data]);
             setTotalCount(response.data.totalCount);
             console.log(response.data.data);

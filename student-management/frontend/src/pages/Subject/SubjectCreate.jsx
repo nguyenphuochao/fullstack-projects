@@ -2,8 +2,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { StoreContext } from '../../context/StoreContext';
+import { useContext } from "react";
 
 const SubjectCreate = () => {
+    const { token } = useContext(StoreContext);
     const navigate = useNavigate();
     const {
         register,
@@ -13,7 +16,7 @@ const SubjectCreate = () => {
 
     const onSubmit = async (data) => {
         try {
-            const response = await axios.post('/subject/add', data);
+            const response = await axios.post('/subject/add', data, { headers: { token } });
             toast.success(response.data.message);
             navigate('/subject/list');
             console.log(response);
