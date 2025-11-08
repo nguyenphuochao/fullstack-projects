@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import Pagination from '../../components/Pagination';
 import axios from 'axios';
 import { updateParam, getGenderName } from '../../helper/util';
 import { toast } from 'react-toastify';
+import { StoreContext } from '../../context/StoreContext';
 
 const StudentList = () => {
+    const { token, setToken } = useContext(StoreContext);
     const [students, setStudents] = useState([]);
     const [totalCount, setTotalCount] = useState(0);
     const [totalpages, setTotalPages] = useState(0);
@@ -16,7 +18,7 @@ const StudentList = () => {
     // Get list students
     const getStudents = async () => {
         try {
-            const response = await axios.get(`/student/list?page=${page}&search=${search}`);
+            const response = await axios.get(`/student/list?page=${page}&search=${search}`, {token});
             setStudents(response.data.data);
             setTotalCount(response.data.totalCount);
             setTotalPages(response.data.pagination.totalPages);
