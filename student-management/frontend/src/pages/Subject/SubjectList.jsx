@@ -3,16 +3,22 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { StoreContext } from '../../context/StoreContext';
+import { useRef } from 'react';
 
 const SubjectList = () => {
     const { token } = useContext(StoreContext);
     const [page, setPage] = useState(1);
     const [subjects, setSubjects] = useState([]);
     const [totalCount, setTotalCount] = useState(0);
+    const timeoutRef = useRef(null);
+    const [search, setSearch] = useState('');
 
     const fetchSubjects = async () => {
         try {
-            const response = await axios.get('/subject/list?page=' + page, { headers: { token } });
+            const response = await axios.get(`/subject/list?page=${page}&search=${search}`, {
+                headers: { token },
+            });
+            
             setSubjects([...subjects, ...response.data.data]);
             setTotalCount(response.data.totalCount);
             console.log(response.data.data);
@@ -21,9 +27,32 @@ const SubjectList = () => {
         }
     };
 
+    const searchInput = async (searchName) => {
+        // Clear any existing timeout
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+        }
+
+        timeoutRef.current = setTimeout(() => {
+            // call API
+            setSearch(searchName);
+            setSubjects([])
+            console.log('searchName:',searchName);
+        }, 500); // 500ms delay
+    };
+
     useEffect(() => {
         fetchSubjects();
-    }, [page]);
+
+        console.log(subjects);
+
+        // Cleanup the timeout when the component unmounts
+        return () => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+        };
+    }, [page, search]);
 
     return (
         <div className="subject">
@@ -33,10 +62,15 @@ const SubjectList = () => {
             </Link>
             <form action="list.html" method="GET">
                 <label className="form-inline justify-content-end">
-                    Tìm kiếm: <input type="search" name="search" className="form-control" defaultValue />
+                    Tìm kiếm:{' '}
+                    <input
+                        type="search"
+                        name="search"
+                        className="form-control"
+                        onKeyUp={(e) => searchInput(e.target.value)}
+                    />
                     <button className="btn btn-danger">Tìm</button>
                 </label>
-                <input type="hidden" name="c" defaultValue="subject" />
             </form>
             <div className="table table-hover">
                 <div className="thead">

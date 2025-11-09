@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
+import methodOverride from 'method-override';
 import { connectDB } from './config/connectDB.js';
 import studentRouter from "./routes/studentRoute.js";
 import subjectRouter from "./routes/subjectRoute.js";
@@ -14,6 +15,8 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 4000;
+// Use methodOverride middleware
+app.use(methodOverride('_method')); // '_method' is the default query parameter name
 
 // Middlewares
 app.use(express.json());

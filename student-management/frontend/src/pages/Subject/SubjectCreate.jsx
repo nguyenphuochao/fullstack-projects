@@ -21,8 +21,12 @@ const SubjectCreate = () => {
             navigate('/subject/list');
             console.log(response);
         } catch (error) {
+            if(error.response.status === 400) {
+                toast.error(error.response.data.message);
+            } else {
+                toast.error(error.message);
+            }
             console.log(error);
-            toast.error(error.message);
         }
     };
 

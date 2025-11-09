@@ -5,11 +5,20 @@ import subjectModel from "../models/subjectModel.js";
 const addSubject = async (req, res) => {
     try {
         const { name, number_of_credits } = req.body
-        await subjectModel.create({
+
+        // validate
+        const subjectNameExists = await subjectModel.findOne({ name: name.trim() });
+        if (subjectNameExists) {
+            return res.status(400).json({ success: false, message: `Môn học ${subjectNameExists.name} đã tồn tại` });
+        }
+
+        // create subject in DB
+        const subject = await subjectModel.create({
             name: name,
             numberOfCredits: number_of_credits,
         });
-        res.status(201).json({ success: true, message: "Subject created success" })
+
+        res.status(201).json({ success: true, message: "Đã thêm mới môn học " + subject.name })
     } catch (error) {
         console.log(error);
         res.status(500).json({ success: false, message: "Error" })
