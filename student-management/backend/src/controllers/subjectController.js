@@ -40,6 +40,12 @@ const listSubject = async (req, res) => {
             })
         }
 
+        // Get all subjects with params ?limit=all
+        if(req.query.limit === 'all') {
+            const subjects = await subjectModel.find(searchQuery).sort({ createdAt: 'desc' });
+            return res.status(200).json({ success: true, data: subjects });
+        }
+
         const totalCount = await subjectModel.countDocuments(searchQuery);
         const totalPages = Math.ceil(await subjectModel.countDocuments(searchQuery) / limit);
         const pagination = { page, totalPages };

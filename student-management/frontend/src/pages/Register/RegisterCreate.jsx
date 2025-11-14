@@ -20,7 +20,7 @@ const RegisterCreate = () => {
     const getStudents = async () => {
         // call api from BE
         try {
-            const res = await axios.get('/student/list', { headers: { token } });
+            const res = await axios.get('/student/list?limit=all', { headers: { token } });
             setStudents(res.data.data);
             console.log(res.data.data);
         } catch (error) {
@@ -32,7 +32,7 @@ const RegisterCreate = () => {
     const getSubjects = async () => {
         // call api from BE
         try {
-            const res = await axios.get('/subject/list', { headers: { token } });
+            const res = await axios.get('/subject/list?limit=all', { headers: { token } });
             setSubjects(res.data.data);
             console.log(res.data.data);
         } catch (error) {

@@ -4,8 +4,10 @@ import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { StoreContext } from '../../context/StoreContext';
 import { useRef } from 'react';
+import Loading from '../../components/Loading';
 
 const SubjectList = () => {
+    const [loading, setLoading] = useState(true);
     const { token } = useContext(StoreContext);
     const [page, setPage] = useState(1);
     const [subjects, setSubjects] = useState([]);
@@ -18,12 +20,14 @@ const SubjectList = () => {
             const response = await axios.get(`/subject/list?page=${page}&search=${search}`, {
                 headers: { token },
             });
-            
+
             setSubjects([...subjects, ...response.data.data]);
             setTotalCount(response.data.totalCount);
+            setLoading(false);
             console.log(response.data.data);
         } catch (error) {
             console.log(error);
+            setLoading(false);
         }
     };
 
@@ -36,8 +40,8 @@ const SubjectList = () => {
         timeoutRef.current = setTimeout(() => {
             // call API
             setSearch(searchName);
-            setSubjects([])
-            console.log('searchName:',searchName);
+            setSubjects([]);
+            console.log('searchName:', searchName);
         }, 500); // 500ms delay
     };
 
@@ -82,42 +86,46 @@ const SubjectList = () => {
                         <div>Tùy Chọn</div>
                     </div>
                 </div>
-                <div
-                    className="tbody"
-                    id="scrollableDiv"
-                    style={{
-                        height: 420,
-                        overflow: 'auto',
-                    }}
-                >
-                    <InfiniteScroll
-                        dataLength={subjects.length}
-                        next={() => setPage((prev) => prev + 1)}
-                        hasMore={subjects.length < totalCount}
-                        loader={<h4>Loading...</h4>}
-                        endMessage={<p className="mt-2 fw-bold">You have seen it all</p>}
-                        scrollableTarget="scrollableDiv"
+                {loading ? (
+                    <Loading />
+                ) : (
+                    <div
+                        className="tbody"
+                        id="scrollableDiv"
+                        style={{
+                            height: 420,
+                            overflow: 'auto',
+                        }}
                     >
-                        {subjects.map((subject, index) => {
-                            return (
-                                <div key={index} className="tr">
-                                    <div>{index + 1}</div>
-                                    <div>{subject._id}</div>
-                                    <div>{subject.name}</div>
-                                    <div>{subject.numberOfCredits}</div>
-                                    <div>
-                                        <a href="edit.html">Sửa</a>
+                        <InfiniteScroll
+                            dataLength={subjects.length}
+                            next={() => setPage((prev) => prev + 1)}
+                            hasMore={subjects.length < totalCount}
+                            loader={<h4>Loading...</h4>}
+                            endMessage={<p className="mt-2 fw-bold">You have seen it all</p>}
+                            scrollableTarget="scrollableDiv"
+                        >
+                            {subjects.map((subject, index) => {
+                                return (
+                                    <div key={index} className="tr">
+                                        <div>{index + 1}</div>
+                                        <div>{subject._id}</div>
+                                        <div>{subject.name}</div>
+                                        <div>{subject.numberOfCredits}</div>
+                                        <div>
+                                            <a href="edit.html">Sửa</a>
+                                        </div>
+                                        <div>
+                                            <a className="delete" data={1} type="subject" href="list.html">
+                                                Xóa
+                                            </a>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <a className="delete" data={1} type="subject" href="list.html">
-                                            Xóa
-                                        </a>
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </InfiniteScroll>
-                </div>
+                                );
+                            })}
+                        </InfiniteScroll>
+                    </div>
+                )}
             </div>
 
             <div className="mt-1">

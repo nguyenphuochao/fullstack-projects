@@ -32,6 +32,12 @@ const listStudent = async (req, res) => {
             })
         }
 
+        // Get all students with params ?limit=all
+        if (req.query.limit === 'all') {
+            const students = await studentModel.find(searchQuery).sort({ createdAt: 'desc' });
+            res.status(200).json({ success: true, data: students });
+        }
+
         const totalCount = await studentModel.countDocuments(searchQuery);
         const totalPages = Math.ceil(await studentModel.countDocuments(searchQuery) / limit);
         const pagination = { page, totalPages };
