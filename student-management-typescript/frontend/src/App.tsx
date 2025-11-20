@@ -11,6 +11,7 @@ import NotFound from "./pages/NotFound";
 import StudentList from "./pages/Student/StudentList";
 import StudentAdd from "./pages/Student/StudentAdd";
 import StudentEdit from "./pages/Student/StudentEdit";
+import Login from "./pages/Login";
 
 
 function App() {
@@ -21,16 +22,15 @@ function App() {
                 <Routes>
 
                     {/* public routes */}
+                    <Route path="/login" element={<Login />} />
                     <Route path="*" element={<NotFound />} />
-
+                    
                     {/* private routes */}
                     <Route element={<LayoutMain />}>
                         <Route path="/" element={<StudentList />} />
                         <Route path="/student/add" element={<StudentAdd />} />
                         <Route path="/student/edit/:id" element={<StudentEdit />} />
                     </Route>
-
-
 
                 </Routes>
             </BrowserRouter>
