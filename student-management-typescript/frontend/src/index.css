@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+.text-bold {
+    font-weight: bold;
+}
+
 .container-login {
     min-height: 100vh;
     background: linear-gradient(45deg, rgb(71, 71, 206), rgb(104, 104, 173));
