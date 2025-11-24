@@ -64,7 +64,7 @@ const signIn = async (req, res) => {
         }
 
         // create access token with JWT
-        const token = createToken(user._id);
+        const accessToken = createToken(user._id);
 
         // create refresh token
         const refreshToken = crypto.randomBytes(64).toString("hex");
@@ -85,7 +85,7 @@ const signIn = async (req, res) => {
         });
 
         // return access token response
-        res.status(200).json({ success: true, token });
+        res.status(200).json({ success: true, accessToken });
     } catch (error) {
         console.log(error);
         res.status(500).json({ success: false, message: "Error" });

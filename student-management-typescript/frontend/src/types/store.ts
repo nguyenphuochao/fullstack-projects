@@ -9,4 +9,6 @@ export interface AuthState {
     clearState: () => void
     signIn: (email: string, password: string) => Promise<void>
     signOut: () => Promise<void>
+    fetchMe: () => Promise<void>
+    refresh: () => Promise<void>
 }

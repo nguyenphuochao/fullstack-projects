@@ -44,5 +44,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         } finally {
             set({ loading: false });
         }
+    },
+
+    refresh: async () => {
+
     }
 }))

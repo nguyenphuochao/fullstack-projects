@@ -21,7 +21,7 @@ app.use(methodOverride('_method')); // '_method' is the default query parameter 
 // Middlewares
 app.use(express.json());
 app.use(cookieParser()); // read cookies
-app.use(cors());
+app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 
 // Public API
 app.use("/api/auth", authRouter);
