@@ -20,7 +20,7 @@ app.use(methodOverride('_method')); // '_method' is the default query parameter 
 
 // Middlewares
 app.use(express.json());
-app.use(cookieParser());
+app.use(cookieParser()); // read cookies
 app.use(cors());
 
 // Public API
