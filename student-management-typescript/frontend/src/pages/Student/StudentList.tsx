@@ -1,6 +1,19 @@
 import { Link } from "react-router"
+import { studentService } from "../../services/studentService";
+import { toast } from "sonner";
+import { useState } from "react";
 
 const StudentList = () => {
+    const [students, setStudents] = useState([]);
+
+    const getStudents = async () => {
+        try {
+            const res = await studentService.listStudent();
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <>
             <h1>Danh sách sinh viên</h1>

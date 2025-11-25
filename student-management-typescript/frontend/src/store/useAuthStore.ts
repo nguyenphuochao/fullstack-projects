@@ -47,6 +47,20 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     },
 
     refresh: async () => {
+        try {
+            set({ loading: true });
+            const { user, fetchMe, setAccessToken } = get();
+            const accessToken = await authService.refreshToken();
+            setAccessToken(accessToken);
 
+            if (!user) {
+                await fetchMe();
+            }
+        } catch (error) {
+            toast.error("Lỗi xảy ra refresh token. Hãy thử lại!");
+            get().clearState();
+        } finally {
+            set({ loading: false });
+        }
     }
 }))

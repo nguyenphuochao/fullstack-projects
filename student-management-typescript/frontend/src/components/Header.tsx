@@ -1,6 +1,10 @@
 import { NavLink } from "react-router"
+import { useAuthStore } from "../store/useAuthStore"
 
 const Header = () => {
+
+    const { user } = useAuthStore();
+
     return (
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div className="menu-list">
@@ -9,7 +13,7 @@ const Header = () => {
                 <NavLink to="/register/list" className=" btn btn-info mr-2">Register</NavLink>
             </div>
             <div className="info-user">
-                <div className="show-fullname">Xin chào: <span className="text-bold">Nguyễn Phước Hảo</span></div>
+                <div className="show-fullname">Xin chào: <span className="text-bold">{user?.fullname}</span></div>
                 <button className="btn btn-info">Thông tin người dùng</button>
                 <button className="btn btn-danger ml-2">Logout</button>
             </div>

@@ -92,6 +92,7 @@ const signIn = async (req, res) => {
     }
 }
 
+// Sign out
 const signOut = async (req, res) => {
     try {
         // get refresh token from cookie
@@ -112,9 +113,42 @@ const signOut = async (req, res) => {
     }
 }
 
+// Create new access token from refresh token
+const refreshToken = async (req, res) => {
+    try {
+        // get refresh token from cookie
+        const token = req.cookies?.refreshToken;
+
+        if (!token) {
+            return res.status(401).json({ success: false, message: "Token không tồn tại" });
+        }
+
+        // check refresh token in DB
+        const session = await sessionModel.findOne({ refreshToken: token });
+
+        if (!session) {
+            return res.status(403).json({ success: false, message: "Token không hợp lệ hoặc đã hết hạn" });
+        }
+
+        // check expiresAt
+        if (session.expiresAt < new Date()) {
+            return res.status(403).json({ success: false, message: "Token đã hết hạn" });
+        }
+
+        // create new access token
+        const accessToken = createToken(session.userId);
+
+        // return
+        res.status(200).json({ success: true, accessToken });
+    } catch (error) {
+        console.log("refreshToken:", error);
+        res.status(500).json({ success: false, message: "Error" });
+    }
+}
+
 // Create access token
 const createToken = (id) => {
     return jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: ACCESS_TOKEN_TTL });
 }
 
-export { signUp, signIn, signOut }
+export { signUp, signIn, signOut, refreshToken }

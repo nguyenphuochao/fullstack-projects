@@ -26,7 +26,7 @@ const LayoutMain = () => {
         init();
     }, []);
 
-    if(starting || loading) {
+    if (starting || loading) {
         return <Loading />
     }
 

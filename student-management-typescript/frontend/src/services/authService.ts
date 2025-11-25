@@ -12,7 +12,12 @@ export const authService = {
 
     fetchMe: async () => {
         const res = await api.get('/user/profile', { withCredentials: true });
-        return res.data;
+        return res.data.user;
+    },
+
+    refreshToken: async () => {
+        const res = await api.post('/auth/refresh', { withCredentials: true });
+        return res.data.accessToken;
     }
 }
 
