@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { toast } from "sonner";
 import type { AuthState } from "../types/store";
 import { authService } from "../services/authService";
+import { useStudentStore } from "./useStudentStore";
 
 export const useAuthStore = create<AuthState>((set, get) => ({
     accessToken: null,
@@ -19,8 +20,11 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     signIn: async (email, password) => {
         try {
             set({ loading: true });
+
             const { accessToken } = await authService.signIn(email, password);
+
             get().setAccessToken(accessToken);
+
             toast.success("Đăng nhập tài khoản thành công!");
         } catch (error) {
             console.log(error);

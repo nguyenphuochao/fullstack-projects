@@ -1,25 +1,22 @@
 import { Link } from "react-router"
-import { studentService } from "../../services/studentService";
-import { toast } from "sonner";
-import { useState } from "react";
+import { useStudentStore } from "../../store/useStudentStore";
+import ListStudent from "../../components/ListStudent";
+import { useEffect } from "react";
 
 const StudentList = () => {
-    const [students, setStudents] = useState([]);
 
-    const getStudents = async () => {
-        try {
-            const res = await studentService.listStudent();
-        } catch (error) {
-            console.log(error);
-        }
-    }
+    const { students ,fetchStudent, totalCount } = useStudentStore();
+
+    useEffect(() => {
+        fetchStudent();
+    }, [])
 
     return (
         <>
             <h1>Danh sách sinh viên</h1>
             <Link to="/student/add" className="btn btn-info">Add</Link>
             <form action="list.html" method="GET">
-                <label className="form-inline justify-content-end">Tìm kiếm: <input type="search" name="search" className="form-control" defaultValue />
+                <label className="form-inline justify-content-end">Tìm kiếm: <input type="search" name="search" className="form-control" />
                     <button className="btn btn-danger">Tìm</button>
                 </label>
             </form>
@@ -36,19 +33,15 @@ const StudentList = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>Nguyễn Thị Bé Bảy</td>
-                        <td>09/03/2000</td>
-                        <td>nữ</td>
-                        <td><Link to="/student/edit/1">Sửa</Link></td>
-                        <td><a data={1} className="delete" href="list.html" type="student">Xóa</a></td>
-                    </tr>
+                    {
+                        students.map((student, index) => (
+                            <ListStudent student={student} index={index} />
+                        ))
+                    }
                 </tbody>
             </table>
             <div className="total-students">
-                <span>Số lượng: 3</span>
+                <span>Số lượng: { totalCount }</span>
             </div>
         </>
     )

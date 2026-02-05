@@ -1,10 +1,10 @@
 import express from 'express';
-import { addStudent, listStudent, detailStudent, deleteStudent, updateStudent } from '../controllers/studentController.js';
+import { addStudent, listStudents, detailStudent, deleteStudent, updateStudent } from '../controllers/studentController.js';
 
 const studentRouter = express.Router();
 
 studentRouter.post("/add", addStudent);
-studentRouter.get("/list", listStudent);
+studentRouter.get("/list", listStudents);
 studentRouter.get("/detail/:id", detailStudent);
 studentRouter.post("/delete", deleteStudent);
 studentRouter.post("/update", updateStudent);

@@ -5,20 +5,27 @@ import studentModel from '../models/studentModel.js'
 const addStudent = async (req, res) => {
     try {
         const { name, birthday, gender } = req.body
+
+        // validate
+        if (!name.trim() || !birthday.trim() || !gender) {
+            return res.status(400).json({ success: false, message: "Vui lòng điền đầy đủ name, birthday, gender" });
+        }
+
+        // create student
         await studentModel.create({
             name,
             birthday,
             gender
         });
-        res.status(201).json({ success: true, message: "Student created success" })
+        res.status(201).json({ success: true, message: `Tạo mới thành công sinh viên ${name}` })
     } catch (error) {
         console.log(error);
-        res.status(500).json({ success: false, message: "Error" })
+        res.status(500).json({ success: false, message: "Có lỗi xảy ra" })
     }
 }
 
 // Get list student
-const listStudent = async (req, res) => {
+const listStudents = async (req, res) => {
     try {
         let searchQuery = studentModel.find({});
         const page = parseInt(req.query.page) || 1;
@@ -45,7 +52,7 @@ const listStudent = async (req, res) => {
         searchQuery.skip(skip).limit(limit);
 
         const students = await studentModel.find(searchQuery).sort({ createdAt: 'desc' });
-        res.status(200).json({ success: true, data: students, totalCount, pagination });
+        res.status(200).json({ success: true, students, totalCount, pagination });
     } catch (error) {
         console.log(error);
         res.status(500).json({ success: false, message: "Error" })
@@ -93,4 +100,4 @@ const updateStudent = async (req, res) => {
     }
 }
 
-export { addStudent, listStudent, detailStudent, deleteStudent, updateStudent }
+export { addStudent, listStudents, detailStudent, deleteStudent, updateStudent }

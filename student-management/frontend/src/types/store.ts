@@ -1,3 +1,5 @@
+import type { Pagination } from "./pagination";
+import type { Student } from "./student";
 import type { User } from "./user";
 
 export interface AuthState {
@@ -11,4 +13,14 @@ export interface AuthState {
     signOut: () => Promise<void>
     fetchMe: () => Promise<void>
     refresh: () => Promise<void>
+}
+
+export interface StudentState {
+    students: Student[],
+    totalCount: number,
+    pagination: Pagination,
+    loading: boolean
+
+    addStudent: (name: string, birthday: string, gender: number) => Promise<void>;
+    fetchStudent: () => Promise<void>;
 }

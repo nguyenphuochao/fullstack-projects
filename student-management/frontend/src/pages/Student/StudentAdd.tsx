@@ -2,18 +2,18 @@ import { Link, useNavigate } from "react-router"
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { studentService } from "../../services/studentService";
-import { toast } from "sonner";
+import { useStudentStore } from "../../store/useStudentStore";
 
 const studentAddSchema = z.object({
     name: z.string().min(1, "Vui lòng nhập tên"),
     birthday: z.string().min(1, "Vui lòng nhập ngày sinh"),
-    gender: z.string().min(3, "Vui lòng chọn giới tính")
+    gender: z.string().min(1, "Vui lòng chọn giới tính")
 });
 
 type StudentAddFormValues = z.infer<typeof studentAddSchema>;
 
 const StudentAdd = ({ className, ...props }: React.ComponentProps<"div">) => {
+    const { addStudent } = useStudentStore();
     const navigate = useNavigate();
 
     const {
@@ -25,15 +25,9 @@ const StudentAdd = ({ className, ...props }: React.ComponentProps<"div">) => {
     });
 
     const onSubmit = async (data: StudentAddFormValues) => {
-        try {
-            const { name, birthday, gender } = data;
-            // call api add student
-            const response = await studentService.addStudent(name, birthday, gender);
-            toast.error(response.message);
-            navigate("/");
-        } catch (error: any) {
-            console.log(error.message);
-        }
+        const { name, birthday, gender } = data;
+        addStudent(name, birthday, Number(gender));
+        navigate("/");
     };
 
     return (
@@ -73,9 +67,10 @@ const StudentAdd = ({ className, ...props }: React.ComponentProps<"div">) => {
                                     id="gender"
                                     {...register("gender")}
                                 >
-                                    <option value={0}>Nam</option>
-                                    <option value={1}>Nữ</option>
-                                    <option value={2}>Khác</option>
+                                    <option value="">-- Vui lòng chọn --</option>
+                                    <option value={1}>Nam</option>
+                                    <option value={2}>Nữ</option>
+                                    <option value={3}>Khác</option>
                                 </select>
                                 {errors.gender && (
                                     <p className="text-danger">
