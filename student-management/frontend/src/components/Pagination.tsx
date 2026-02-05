@@ -1,8 +1,17 @@
+import { Link } from "react-router";
 import type { Paginate } from "../types/paginate"
 
+interface PaginationProps {
+    pagination: Paginate;
+    handlePrevPage: () => void;
+    handleNextPage: () => void;
+    handleClickPage: (page: number) => void;
+}
 
-const Pagination = ({ pagination }: { pagination: Paginate }) => {
+const Pagination = ({ pagination, handlePrevPage, handleNextPage,handleClickPage }: PaginationProps) => {
 
+    const page = pagination.page;
+    const totalPages = pagination.totalPages;
     const pageItems = [];
     for (let i = 1; i <= pagination.totalPages; i++) {
         pageItems.push(i);
@@ -11,20 +20,20 @@ const Pagination = ({ pagination }: { pagination: Paginate }) => {
     return (
         <nav className="mt-4" aria-label="...">
             <ul className="pagination">
-                <li className="page-item disabled">
-                    <a className="page-link" href="#">Previous</a>
+                <li onClick={handlePrevPage} className={`page-item ${page <= 1 ? 'disabled' : ''}`}>
+                    <Link className="page-link" to="#">Previous</Link>
                 </li>
 
                 {
                     pageItems.map((page, index) => (
-                        <li key={index} className={`page-item ${page === pagination.page ? 'active' : ''}`}>
-                            <a className="page-link" href="#">{page} <span className="sr-only">(current)</span></a>
+                        <li onClick={() => handleClickPage(page)} key={index} className={`page-item ${page === pagination.page ? 'active' : ''}`}>
+                            <Link className="page-link" to="#">{page} <span className="sr-only">(current)</span></Link>
                         </li>
                     ))
                 }
 
-                <li className="page-item">
-                    <a className="page-link" href="#">Next</a>
+                <li onClick={handleNextPage} className={`page-item ${page >= totalPages ? 'disabled' : ''}`}>
+                    <Link className="page-link" to="#">Next</Link>
                 </li>
             </ul>
         </nav>

@@ -1,4 +1,4 @@
-import type { Pagination } from "./paginate";
+import type { Paginate } from "./paginate";
 
 export interface Student {
     _id: string;
@@ -10,5 +10,5 @@ export interface Student {
 export interface StudentResponse {
     students: Student[]
     totalCount: number
-    pagination: Pagination
+    pagination: Paginate
 }

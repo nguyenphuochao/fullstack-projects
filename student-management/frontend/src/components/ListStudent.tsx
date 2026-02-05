@@ -6,17 +6,23 @@ interface ListStudentProps {
     index: number
 }
 
-const getGender = (gender: number) => {
-    if (gender === 1) {
-        return "Nam"
-    } else if (gender === 2) {
-        return "Nữ"
-    } else {
-        return "Khác"
-    }
-}
-
 const ListStudent = ({ student, index }: ListStudentProps) => {
+    const getGender = (gender: number) => {
+        if (gender === 1) {
+            return "Nam"
+        } else if (gender === 2) {
+            return "Nữ"
+        } else {
+            return "Khác"
+        }
+    }
+
+    const handleConfirmDelete = () => {
+        if (confirm("Bạn chắc xóa sinh viên này?")) {
+            alert('Deleted')
+        }
+    }
+
     return (
         <tr>
             <td>{index + 1}</td>
@@ -28,7 +34,7 @@ const ListStudent = ({ student, index }: ListStudentProps) => {
                 <Link to="/student/edit/1">Sửa</Link>
             </td>
             <td>
-                <a className="delete" href="list.html" type="student">Xóa</a>
+                <Link onClick={handleConfirmDelete} to="#">Xóa</Link>
             </td>
         </tr>
     )

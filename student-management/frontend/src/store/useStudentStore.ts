@@ -24,7 +24,7 @@ export const useStudentStore = create<StudentState>((set, get) => ({
         }
     },
 
-    fetchStudent: async (page?: number, search?: string) => {
+    fetchStudent: async (page: number = 1, search: string = '') => {
         try {
             set({ loading: true });
             const { students, totalCount, pagination } = await studentService.listStudent(page, search);
@@ -36,5 +36,18 @@ export const useStudentStore = create<StudentState>((set, get) => ({
         } finally {
             set({ loading: false });
         }
-    }
+    },
+
+    deleteStudent: async (id: string) => {
+        try {
+            set({ loading: true });
+            const { message } = await studentService.deleteStudent(id);
+            toast.success('Đã xóa thành công');
+        } catch (error) {
+            console.error("Lỗi xảy ra khi gọi deleteStudent:", error);
+        } finally {
+            set({ loading: false });
+        }
+    },
+
 }))

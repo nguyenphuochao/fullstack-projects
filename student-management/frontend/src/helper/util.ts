@@ -1,5 +1,5 @@
-export const updateParam = (searchParams, setSearchParams, newParams) => {
-    let params = {}
+export const updateParam = (searchParams: URLSearchParams, setSearchParams: Function, newParams: {}) => {
+    let params: { [key: string]: any } = {}
     // searchParams chứa param hiện tại trên thanh địa chỉ web
     for (const [key, value] of searchParams.entries()) {
         // key là tên param, value là giá trị của param đó

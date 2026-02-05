@@ -7,8 +7,13 @@ export const studentService = {
         return res.data;
     },
 
-    async listStudent(page?: number, search?: string): Promise<StudentResponse> {
+    async listStudent(page: number, search: string): Promise<StudentResponse> {
         const res = await api.get(`/student/list?page=${page}&search=${search}`, { withCredentials: true });
         return res.data;
-    }
+    },
+
+    deleteStudent: async (id: string) => {
+        const res = await api.post('/student/delete', { id }, { withCredentials: true });
+        return res.data;
+    },
 }

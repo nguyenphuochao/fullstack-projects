@@ -13,7 +13,6 @@ import StudentAdd from "./pages/Student/StudentAdd";
 import StudentEdit from "./pages/Student/StudentEdit";
 import Login from "./pages/Login";
 
-
 function App() {
     return (
         <>
