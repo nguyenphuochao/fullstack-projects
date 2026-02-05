@@ -1,4 +1,4 @@
-import type { Pagination } from "./pagination";
+import type { Pagination } from "./paginate";
 
 export interface Student {
     _id: string;

@@ -1,4 +1,4 @@
-import type { Pagination } from "./pagination";
+import type { Pagination } from "./paginate";
 import type { Student } from "./student";
 import type { User } from "./user";
 
@@ -22,5 +22,5 @@ export interface StudentState {
     loading: boolean
 
     addStudent: (name: string, birthday: string, gender: number) => Promise<void>;
-    fetchStudent: () => Promise<void>;
+    fetchStudent: (page?: number, search?: string) => Promise<void>;
 }

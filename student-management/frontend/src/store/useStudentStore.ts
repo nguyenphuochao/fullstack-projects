@@ -24,10 +24,10 @@ export const useStudentStore = create<StudentState>((set, get) => ({
         }
     },
 
-    fetchStudent: async () => {
+    fetchStudent: async (page?: number, search?: string) => {
         try {
             set({ loading: true });
-            const { students, totalCount, pagination } = await studentService.listStudent();
+            const { students, totalCount, pagination } = await studentService.listStudent(page, search);
             set({ students });
             set({ totalCount });
             set({ pagination });

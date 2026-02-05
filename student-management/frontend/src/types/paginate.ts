@@ -1,4 +1,4 @@
-export interface Pagination {
+export interface Paginate {
     page: number,
     totalPages: number
 }
