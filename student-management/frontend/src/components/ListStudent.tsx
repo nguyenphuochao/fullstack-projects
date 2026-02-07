@@ -1,5 +1,6 @@
 import { Link } from "react-router"
 import type { Student } from "../types/student"
+import { useStudentStore } from "../store/useStudentStore"
 
 interface ListStudentProps {
     student: Student,
@@ -7,6 +8,9 @@ interface ListStudentProps {
 }
 
 const ListStudent = ({ student, index }: ListStudentProps) => {
+
+    const { deleteStudent, fetchStudent } = useStudentStore();
+
     const getGender = (gender: number) => {
         if (gender === 1) {
             return "Nam"
@@ -17,9 +21,10 @@ const ListStudent = ({ student, index }: ListStudentProps) => {
         }
     }
 
-    const handleConfirmDelete = () => {
+    const handleConfirmDelete = async (id: string) => {
         if (confirm("Bạn chắc xóa sinh viên này?")) {
-            alert('Deleted')
+            await deleteStudent(id);
+            await fetchStudent();
         }
     }
 
@@ -34,7 +39,7 @@ const ListStudent = ({ student, index }: ListStudentProps) => {
                 <Link to="/student/edit/1">Sửa</Link>
             </td>
             <td>
-                <Link onClick={handleConfirmDelete} to="#">Xóa</Link>
+                <Link onClick={() => handleConfirmDelete(student._id)} to="#">Xóa</Link>
             </td>
         </tr>
     )

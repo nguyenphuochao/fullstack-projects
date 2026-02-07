@@ -67,20 +67,36 @@ const StudentList = () => {
                 </thead>
                 <tbody>
                     {
-                        students.map((student, index) => (
-                            <ListStudent student={student} index={index} />
-                        ))
+                        students.length > 0 ? (
+                            students.map((student, index) => (
+                                <ListStudent student={student} index={index} />
+                            ))
+                        ) : (
+                            <tr className="text-center">
+                                <td colSpan={7}>Chưa có dữ liệu sinh viên. <Link to={'/student/add'}>Thêm sinh viên</Link></td>
+                            </tr>
+                        )
+
                     }
                 </tbody>
             </table>
 
             {/* Total students */}
-            <div className="total-students">
-                <span>Số lượng: {totalCount}</span>
-            </div>
+            {
+                students.length > 0 && (
+                    <div className="total-students">
+                        <span>Số lượng: {totalCount}</span>
+                    </div>
+                )
+            }
 
             {/* Pagination */}
-            <Pagination pagination={pagination} handlePrevPage={handlePrevPage} handleNextPage={handleNextPage} handleClickPage={handleClickPage} />
+            {
+                students.length > 0 && (
+                    <Pagination pagination={pagination} handlePrevPage={handlePrevPage} handleNextPage={handleNextPage} handleClickPage={handleClickPage} />
+                )
+            }
+
         </>
     )
 }

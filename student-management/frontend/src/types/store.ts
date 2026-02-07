@@ -22,6 +22,7 @@ export interface StudentState {
     loading: boolean;
 
     addStudent: (name: string, birthday: string, gender: number) => Promise<void>;
+    deleteStudent: (id: string) => Promise<void>;
     fetchStudent: (page?: number, search?: string) => Promise<void>;
 }
 

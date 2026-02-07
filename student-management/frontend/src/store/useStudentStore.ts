@@ -42,7 +42,7 @@ export const useStudentStore = create<StudentState>((set, get) => ({
         try {
             set({ loading: true });
             const { message } = await studentService.deleteStudent(id);
-            toast.success('Đã xóa thành công');
+            toast.success(message);
         } catch (error) {
             console.error("Lỗi xảy ra khi gọi deleteStudent:", error);
         } finally {

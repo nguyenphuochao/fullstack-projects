@@ -81,8 +81,12 @@ const deleteStudent = async (req, res) => {
             return res.status(400).json({ success: true, message: `Sinh viên ${student.name} đã đăng kí môn học. Không thể xóa` });
         }
 
+        if(!student) {
+            return res.status(404).json({ success: false, message: `Không tìm thấy sinh viên có ID=${studentId}` });
+        }
+
         await studentModel.findByIdAndDelete(req.body.id);
-        res.status(200).json({ success: true, message: "Student deleted success" });
+        res.status(200).json({ success: true, message: "Đã xóa thành công sinh viên" });
     } catch (error) {
         console.log(error);
         res.status(500).json({ success: false, message: "Error" })
