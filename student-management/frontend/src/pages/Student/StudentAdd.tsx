@@ -26,7 +26,7 @@ const StudentAdd = ({ className, ...props }: React.ComponentProps<"div">) => {
 
     const onSubmit = async (data: StudentAddFormValues) => {
         const { name, birthday, gender } = data;
-        addStudent(name, birthday, Number(gender));
+        await addStudent(name, birthday, Number(gender));
         navigate("/");
     };
 
@@ -37,6 +37,7 @@ const StudentAdd = ({ className, ...props }: React.ComponentProps<"div">) => {
                 <div className="container">
                     <div className="row">
                         <div className="col-md-5">
+                            
                             <div className="form-group">
                                 <label htmlFor="name">Tên</label>
                                 <input type="text" className="form-control" placeholder="Tên của bạn"
@@ -49,6 +50,7 @@ const StudentAdd = ({ className, ...props }: React.ComponentProps<"div">) => {
                                     </p>
                                 )}
                             </div>
+
                             <div className="form-group">
                                 <label htmlFor="birthday">Birthday</label>
                                 <input type="date" className="form-control" placeholder="Ngày sinh của bạn"
@@ -61,6 +63,7 @@ const StudentAdd = ({ className, ...props }: React.ComponentProps<"div">) => {
                                     </p>
                                 )}
                             </div>
+
                             <div className="form-group">
                                 <label htmlFor="gender">Chọn Giới tính</label>
                                 <select className="form-control"
@@ -78,6 +81,7 @@ const StudentAdd = ({ className, ...props }: React.ComponentProps<"div">) => {
                                     </p>
                                 )}
                             </div>
+
                             <div className="form-group">
                                 <button className="btn btn-success" type="submit" disabled={isSubmitting}>Lưu</button>
                                 <Link className="btn btn-warning ml-2" to={'/'}>Quay về</Link>

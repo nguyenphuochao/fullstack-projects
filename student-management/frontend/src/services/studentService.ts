@@ -12,6 +12,16 @@ export const studentService = {
         return res.data;
     },
 
+    detailStudent: async (id: string) => {
+        const res = await api.get(`/student/detail/${id}`, { withCredentials: true });
+        return res.data;
+    },
+
+    updateStudent: async (id: string, name: string, birthday: string, gender: number) => {
+        const res = await api.post('/student/update', { id, name, birthday, gender }, { withCredentials: true });
+        return res.data;
+    },
+
     deleteStudent: async (id: string) => {
         const res = await api.post('/student/delete', { id }, { withCredentials: true });
         return res.data;

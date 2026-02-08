@@ -1,9 +1,9 @@
 import { Link, useSearchParams } from "react-router"
 import { useStudentStore } from "../../store/useStudentStore";
-import ListStudent from "../../components/ListStudent";
 import { useEffect, useState } from "react";
 import Pagination from "../../components/Pagination";
 import { updateParam } from "../../helper/util";
+import StudentItem from "../../components/StudentItem";
 
 const StudentList = () => {
     const { students, fetchStudent, totalCount, pagination } = useStudentStore();
@@ -69,7 +69,7 @@ const StudentList = () => {
                     {
                         students.length > 0 ? (
                             students.map((student, index) => (
-                                <ListStudent student={student} index={index} />
+                                <StudentItem student={student} index={index} />
                             ))
                         ) : (
                             <tr className="text-center">

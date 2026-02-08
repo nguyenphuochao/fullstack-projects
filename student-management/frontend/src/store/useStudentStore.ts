@@ -5,6 +5,7 @@ import { studentService } from "../services/studentService";
 
 export const useStudentStore = create<StudentState>((set, get) => ({
     students: [],
+    student: { _id: '', name: '', birthday: '', gender: 0 },
     totalCount: 0,
     pagination: {
         page: 1,
@@ -33,6 +34,30 @@ export const useStudentStore = create<StudentState>((set, get) => ({
             set({ pagination });
         } catch (error) {
             console.error("Lỗi xảy ra khi gọi listStudent:", error);
+        } finally {
+            set({ loading: false });
+        }
+    },
+
+    detailStudent: async (id: string) => {
+        try {
+            set({ loading: true });
+            const { student } = await studentService.detailStudent(id);
+            set({ student });
+        } catch (error) {
+            console.error("Lỗi xảy ra khi gọi detailStudent:", error);
+        } finally {
+            set({ loading: false });
+        }
+    },
+
+    updateStudent: async (id: string, name: string, birthday: string, gender: number) => {
+        try {
+            set({ loading: true });
+            const { message } = await studentService.updateStudent(id, name, birthday, gender);
+            toast.success(message);
+        } catch (error) {
+            console.error("Lỗi xảy ra khi gọi updateStudent:", error);
         } finally {
             set({ loading: false });
         }

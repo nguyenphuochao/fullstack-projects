@@ -62,11 +62,17 @@ const listStudents = async (req, res) => {
 // Detail student by _id
 const detailStudent = async (req, res) => {
     try {
-        const student = await studentModel.findById(req.params.id);
-        res.status(200).json({ success: true, student });
+        const _id = req.params.id;
+        const student = await studentModel.findById(_id);
+
+        if (!student) {
+            return res.status(404).json({ success: false, message: 'Không tìm thấy sinh viên có ID=' + _id });
+        }
+
+        return res.status(200).json({ success: true, student });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ success: false, message: "Error" })
+        return res.status(500).json({ success: false, message: "Error" })
     }
 }
 
@@ -81,7 +87,7 @@ const deleteStudent = async (req, res) => {
             return res.status(400).json({ success: true, message: `Sinh viên ${student.name} đã đăng kí môn học. Không thể xóa` });
         }
 
-        if(!student) {
+        if (!student) {
             return res.status(404).json({ success: false, message: `Không tìm thấy sinh viên có ID=${studentId}` });
         }
 
@@ -96,11 +102,28 @@ const deleteStudent = async (req, res) => {
 // Update student by _id
 const updateStudent = async (req, res) => {
     try {
-        await studentModel.findByIdAndUpdate(req.body.id, req.body);
-        res.status(200).json({ success: true, message: "Student updated success" });
+        const { id, name, birthday, gender } = req.body;
+
+        // validate
+        if (!name.trim() || !birthday.trim() || !gender) {
+            return res.status(400).json({ success: false, message: "Vui lòng điền đầy đủ name, birthday, gender" });
+        }
+
+        // update student
+        const studentUpdate = await studentModel.findByIdAndUpdate(id, {
+            $set: { name, birthday, gender }
+        });
+
+        // check exists student
+        if (!studentUpdate) {
+            return res.status(404).json({ success: false, message: "Không tìm thấy sinh viên có ID=" + id });
+        }
+
+        // return
+        return res.status(200).json({ success: true, message: "Đã cập nhật thành công sinh viên", student: studentUpdate });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ success: false, message: "Error" })
+        return res.status(500).json({ success: false, message: "Error" })
     }
 }
 

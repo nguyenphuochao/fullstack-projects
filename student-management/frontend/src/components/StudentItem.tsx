@@ -2,16 +2,16 @@ import { Link } from "react-router"
 import type { Student } from "../types/student"
 import { useStudentStore } from "../store/useStudentStore"
 
-interface ListStudentProps {
+interface StudentItemProps {
     student: Student,
     index: number
 }
 
-const ListStudent = ({ student, index }: ListStudentProps) => {
+const StudentItem = ({ student, index }: StudentItemProps) => {
 
     const { deleteStudent, fetchStudent } = useStudentStore();
 
-    const getGender = (gender: number) => {
+    const getGenderName = (gender: number) => {
         if (gender === 1) {
             return "Nam"
         } else if (gender === 2) {
@@ -34,9 +34,9 @@ const ListStudent = ({ student, index }: ListStudentProps) => {
             <td>{student._id}</td>
             <td>{student.name}</td>
             <td>{student.birthday}</td>
-            <td>{getGender(student.gender)}</td>
+            <td>{getGenderName(student.gender)}</td>
             <td>
-                <Link to="/student/edit/1">Sửa</Link>
+                <Link to={`/student/edit/${student._id}`}>Sửa</Link>
             </td>
             <td>
                 <Link onClick={() => handleConfirmDelete(student._id)} to="#">Xóa</Link>
@@ -45,4 +45,4 @@ const ListStudent = ({ student, index }: ListStudentProps) => {
     )
 }
 
-export default ListStudent
+export default StudentItem
