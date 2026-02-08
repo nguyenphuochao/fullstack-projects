@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useAuthStore } from '../store/useAuthStore';
 import Loading from './Loading';
 
-const LayoutMain = () => {
+const ProtectedRoute = () => {
     const [starting, setStarting] = useState(true);
     const { accessToken, user, loading, refresh, fetchMe } = useAuthStore();
 
@@ -51,4 +51,4 @@ const LayoutMain = () => {
     )
 }
 
-export default LayoutMain
+export default ProtectedRoute

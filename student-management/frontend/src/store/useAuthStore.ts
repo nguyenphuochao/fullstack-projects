@@ -34,7 +34,16 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     },
 
     signOut: async () => {
-        get().clearState();
+        try {
+            set({ loading: true });
+            await authService.signOut();
+            get().clearState();
+            toast.success("Đăng xuất thành công!")
+        } catch (error) {
+            console.log(error);
+        } finally {
+            set({ loading: false });
+        }
     },
 
     fetchMe: async () => {

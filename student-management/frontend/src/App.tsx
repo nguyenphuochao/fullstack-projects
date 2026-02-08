@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import { Toaster } from "sonner";
 
 // Layout
-import LayoutMain from "./components/LayoutMain";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 // Page Not Found
 import NotFound from "./pages/NotFound";
@@ -25,7 +25,7 @@ function App() {
                     <Route path="*" element={<NotFound />} />
                     
                     {/* private routes */}
-                    <Route element={<LayoutMain />}>
+                    <Route element={<ProtectedRoute />}>
                         <Route path="/" element={<StudentList />} />
                         <Route path="/student/add" element={<StudentAdd />} />
                         <Route path="/student/edit/:id" element={<StudentEdit />} />

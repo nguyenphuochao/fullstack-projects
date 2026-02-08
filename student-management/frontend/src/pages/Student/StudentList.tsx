@@ -27,7 +27,7 @@ const StudentList = () => {
         setPage(page - 1);
         const newParams = { page: page - 1 };
         updateParam(searchParams, setSearchParams, newParams);
-        fetchStudent(page - 1);
+        fetchStudent(page - 1, search);
     }
 
     const handleNextPage = () => {
@@ -35,13 +35,13 @@ const StudentList = () => {
         setPage(page + 1);
         const newParams = { page: page + 1 };
         updateParam(searchParams, setSearchParams, newParams);
-        fetchStudent(page + 1);
+        fetchStudent(page + 1, search);
     }
 
     const handleClickPage = (page: number) => {
         const newParams = { page: page };
         updateParam(searchParams, setSearchParams, newParams);
-        fetchStudent(page);
+        fetchStudent(page, search);
     }
 
     return (
